@@ -1,7 +1,8 @@
 # MLHC 2018 - Reproducible Survival Prediction with SEER Cancer Data
 This repository contains the code that was used for experiments reported in _Reproducible Survival Prediction with SEER Cancer Data_ submitted to the Machine Learning for Healthcare 2018 conference.
 
-Repository overview:
+
+## Repository overview:
 - **/bin/cluster**: Slurm submission scripts for all parameter tuning experiments on the HPC cluster.
 - **/cohort**: SEER*Stat session files to reproduce cohort selections.
 - **/example**: Randomly generated SEER example to test the software without sensitive data.
@@ -11,18 +12,23 @@ Repository overview:
 - **main.py**: Main routine to perform the experiments.
 - **requirements.txt**: Python dependencies (can be installed with pip, e.g. in a virtual environment).
 
-To execute main.py and reproduce our experiments Python3 (we used version 3.5.2) is necessary and all dependencies in requirements.txt must be satisfied. The easiest way would be to setup an according [virtual environment and to install requirements with pip](https://docs.python.org/3/tutorial/venv.html).
 
+## Set up a virtual environment with conda
+Create a virtual environment with the following script.
+
+    conda create --name mlhc -y python=3.6.9
+	conda activate mlhc
+	conda install --file requirements.txt
+
+## Run the experiments
 The option -h gives an overview of all command line arguments. Note that this code provides some additional functionality such as SVM models and survival regression that were not used for the paper's experiments.
 
-```
-$ python main.py -h
-```
+    python main.py -h
 
 An experiment with the randomly generated examples and an MLP model can be performed as shown below. This will produce a folder in the current directory containing results and a plot for the AUC score.
 
-```
-$ python main.py --incidences example/INCIDENCES.txt --specifications example/read.seer.research.nov2016.sas --cases example/CASES.csv --task survival60 --oneHotEncoding --model MLP --mlpLayers 2 --mlpWidth 20 --mlpEpochs 1 --mlpDropout 0.1 --importance --plotData --plotResults
+    python main.py --incidences example/INCIDENCES.txt --specifications example/read.seer.research.nov2016.sas --cases example/CASES.csv --task survival60 --oneHotEncoding --model MLP --mlpLayers 2 --mlpWidth 20 --mlpEpochs 1 --mlpDropout 0.1 --importance --plotData --plotResults
+
 [...]
 Read ASCII data files.
 Raw data: (10000; 133) cases and attributes
@@ -39,4 +45,3 @@ Train on 2264 samples, validate on 283 samples
 Epoch 1/1
  - 1s - loss: 0.4241 - acc: 0.8913 - val_loss: 0.2623 - val_acc: 0.9293
 Validation results: auc = 0.48878326996197724, f1 = 0.9633699633699635, acc = 0.9293286219081273
-```
